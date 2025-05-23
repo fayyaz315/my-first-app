@@ -3,7 +3,7 @@
 client_id = "5986fe1c0087648dd13eedb8aa7616d0"
 name = "my-first-app"
 handle = "my-first-app-1708"
-application_url = "https://voices-cell-anti-mary.trycloudflare.com"
+application_url = "https://accessing-canyon-leaders-penn.trycloudflare.com"
 embedded = true
 
 [build]
@@ -27,9 +27,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://voices-cell-anti-mary.trycloudflare.com/auth/callback",
-  "https://voices-cell-anti-mary.trycloudflare.com/auth/shopify/callback",
-  "https://voices-cell-anti-mary.trycloudflare.com/api/auth/callback"
+  "https://accessing-canyon-leaders-penn.trycloudflare.com/auth/callback",
+  "https://accessing-canyon-leaders-penn.trycloudflare.com/auth/shopify/callback",
+  "https://accessing-canyon-leaders-penn.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]

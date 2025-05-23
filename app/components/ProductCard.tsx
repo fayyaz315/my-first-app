@@ -1,14 +1,26 @@
-import { Card, Thumbnail, BlockStack, Text } from '@shopify/polaris'
+import {
+  Card,
+  Thumbnail,
+  BlockStack,
+  Text,
+  Button,
+  InlineStack,
+} from '@shopify/polaris'
 
-export function ProductCard({ product }) {
+export function ProductCard({ product, onEdit }) {
   const image = product.featuredImage
 
   return (
     <Card>
       <BlockStack gap="300" padding="400">
-        <Text as="h2" variant="headingSm">
-          {product.title}
-        </Text>
+        <InlineStack align="space-between">
+          <Text as="h2" variant="headingSm">
+            {product.title}
+          </Text>
+          <Button size="slim" onClick={onEdit}>
+            Edit
+          </Button>
+        </InlineStack>
 
         {image && (
           <Thumbnail
@@ -19,7 +31,7 @@ export function ProductCard({ product }) {
         )}
 
         <Text as="p" variant="bodyMd">
-          {product.description}
+          {product.description || 'No description provided'}
         </Text>
 
         <Text as="p" variant="bodyMd">

@@ -7,8 +7,8 @@ export const GET_PRODUCTS_QUERY = `
         node {
           id
           title
-          handle
           description
+          descriptionHtml
           featuredImage {
             url
             altText
@@ -26,6 +26,7 @@ export const GET_PRODUCTS_QUERY = `
     }
   }
 `
+
 
 
 export async function getProducts(request: Request) {
@@ -58,3 +59,19 @@ export const CREATE_PRODUCT_MUTATION = `
 `
 
 
+
+export const PRODUCT_UPDATE_MUTATION = `
+  mutation updateProduct($input: ProductInput!) {
+    productUpdate(input: $input) {
+      product {
+        id
+        title
+        descriptionHtml
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
