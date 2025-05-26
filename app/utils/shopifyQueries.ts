@@ -1,14 +1,15 @@
 import { authenticate } from '../shopify.server'
 
 export const GET_PRODUCTS_QUERY = `
-  query getProducts($first: Int!) {
-    products(first: $first) {
+  query getProducts($first: Int!, $query: String, $after: String) {
+    products(first: $first, query: $query, after: $after) {
       edges {
         node {
           id
           title
           description
           descriptionHtml
+          status
           featuredImage {
             url
             altText
@@ -23,24 +24,36 @@ export const GET_PRODUCTS_QUERY = `
           }
         }
       }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
     }
   }
 `
 
-
-
-export async function getProducts(request: Request) {
+export async function getProducts(request: Request, searchQuery = '', after = null) {
   const { admin } = await authenticate.admin(request)
 
-  const response = await admin.graphql(GET_PRODUCTS_QUERY, {
-    variables: { first: 20 }
-  })
+  const variables: any = {
+    first: 10,
+    query: searchQuery ? `title:*${searchQuery}*` : undefined,
+    after: after || undefined,
+  }
 
+  const response = await admin.graphql(GET_PRODUCTS_QUERY, { variables })
   const json = await response.json()
-  const products = json?.data?.products?.edges?.map((edge: any) => edge.node) || []
-  console.log('Products:', products)
-  return products
+
+  const edges = json?.data?.products?.edges || []
+  const products = edges.map((edge: any) => edge.node)
+
+  return {
+    products,
+    hasNextPage: json?.data?.products?.pageInfo?.hasNextPage,
+    endCursor: json?.data?.products?.pageInfo?.endCursor,
+  }
 }
+
 
 
 export const CREATE_PRODUCT_MUTATION = `
@@ -75,3 +88,18 @@ export const PRODUCT_UPDATE_MUTATION = `
     }
   }
 `
+
+
+export const PRODUCT_DELETE_MUTATION = `
+  mutation productDelete($input: ProductDeleteInput!) {
+    productDelete(input: $input) {
+      deletedProductId
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
+

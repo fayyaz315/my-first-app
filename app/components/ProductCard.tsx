@@ -5,29 +5,47 @@ import {
   Text,
   Button,
   InlineStack,
+  Badge,
+  Box,
 } from '@shopify/polaris'
 
-export function ProductCard({ product, onEdit }) {
+export function ProductCard({ product, onEdit, onDelete }) {
   const image = product.featuredImage
+  const statusTone = product.status === 'ACTIVE' ? 'success' : 'attention'
 
   return (
-    <Card>
-      <BlockStack gap="300" padding="400">
+    <Card padding="400">
+      <BlockStack gap="300">
         <InlineStack align="space-between">
-          <Text as="h2" variant="headingSm">
-            {product.title}
-          </Text>
-          <Button size="slim" onClick={onEdit}>
-            Edit
-          </Button>
-        </InlineStack>
+          <InlineStack gap="200" align="center">
+            
+            <Text as="h2" variant="headingSm">
+              {product.title}
+            </Text>
+          </InlineStack>
 
+          <InlineStack gap="200">
+            <Button size="slim" onClick={onEdit}>
+              Edit
+            </Button>
+            <Button size="slim" tone="critical" onClick={onDelete}>
+              Delete
+            </Button>
+          </InlineStack>
+        </InlineStack>
+        <div style={{maxWidth: '200px'}}>
+      <Badge tone={statusTone}>
+                    {product.status === 'ACTIVE' ? 'Active' : 'Draft'}
+                  </Badge>
+                  </div>
         {image && (
-          <Thumbnail
-            source={image.url}
-            alt={image.altText || product.title}
-            size="large"
-          />
+          <Box paddingBlock="300">
+            <Thumbnail
+              source={image.url}
+              alt={image.altText || product.title}
+              size="large"
+            />
+          </Box>
         )}
 
         <Text as="p" variant="bodyMd">
